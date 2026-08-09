@@ -1,0 +1,16 @@
+{
+  "weights_path": "robust_weights.pth",
+  "seed": 29,
+  "salt_key": 35317,
+  "num_seq": 30,
+  "window_size": 5,
+  "embedder_name" : "semmax_utils/finetuned_embedder",
+  "alpha": 0.6,
+  "max_gen_len": 200,
+  "top_p": 0.95,
+  "temperature": 0.85,
+  "max_tokens_per_step": 60,
+  "z_threshold": 2.33,
+  "p_val_threshold": 0.05,
+  "emit_full_text": false
+}

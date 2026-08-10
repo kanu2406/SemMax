@@ -1,15 +1,3 @@
-transformers
-datasets
-nltk
-jieba
-accelerate
-SentencePiece
-openai==0.28
-matplotlib
-Cython
-Pillow==9.4.0
-sacrebleu
-sentence-transformers
-networkx
-translate
-tiktoken
+version https://git-lfs.github.com/spec/v1
+oid sha256:cc006face843da200581b1f379009d2d6d183f95215876bbfec73c77b48951d9
+size 176

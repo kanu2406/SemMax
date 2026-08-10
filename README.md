@@ -44,5 +44,3 @@ python generate.py
 python robust_analysis.py
 
 ```
-
-####### Currently missing folder finetuned_embedder and datasets

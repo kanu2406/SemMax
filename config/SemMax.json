@@ -1,5 +1,5 @@
 {
-  "weights_path": "robust_weights.pth",
+  "weights_path": "semmax_utils/robust_weights.pth",
   "seed": 29,
   "salt_key": 35317,
   "num_seq": 30,

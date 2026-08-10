@@ -1,11 +1,3 @@
-{
-    "algorithm_name": "SIR",
-    "delta": 1.0,
-    "chunk_length": 10,
-    "scale_dimension": 300,
-    "z_threshold": 0.2,
-    "transform_model_input_dim": 1024,
-    "transform_model_name": "watermark/sir/model/transform_model_cbert.pth",
-    "embedding_model_path": "watermark/sir/model/compositional-bert-large-uncased/",
-    "mapping_name": "watermark/sir/mapping/300_mapping_50272.json"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:0f1003f5c8e0bd7da52fc03669dc9dbf6b6df98ebde8289260c76bc28bade157
+size 394

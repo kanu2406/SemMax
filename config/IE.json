@@ -1,15 +1,3 @@
-{
-    "algorithm_name": "IE",
-    "gamma": 0.5,
-    "delta": 3.0,
-    "hash_key": 15485863,
-    "z_threshold": 4.0,
-    "prefix_length": 1,
-    "embedding_model_path": "princeton-nlp/sup-simcse-roberta-base",
-    "entropy_tagger_path": "watermark/ie/model/",
-    "entropy_threshold": 0.3,
-    "start_entropy": 0.6,
-    "interval": 0.3,
-    "end_entropy": 1.5,
-    "direction": "left"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a7b1326812d80e2f31175170e0b328a45d125436c259b8220d80494d2e0c4901
+size 386

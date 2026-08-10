@@ -1,10 +1,3 @@
-{
-    "algorithm_name": "DIP",
-    "gamma": 0.5,
-    "alpha": 0.45,
-    "key": 42,
-    "prefix_length": 5,
-    "z_threshold": 1.513,
-    "ignore_history_generation": 0,
-    "ignore_history_detection": 0
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6ed99b94c779ae8eceb180629d77cb8acb2718a77361713ed5ec9bd162ab744f
+size 205

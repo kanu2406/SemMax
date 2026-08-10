@@ -1,7 +1,3 @@
-{
-    "algorithm_name": "EXP",
-    "prefix_length": 4,
-    "hash_key": 15485863,
-    "threshold": 1e-4,
-    "sequence_length": 200
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:de2cd77d21a8b0c9de48917f095fdb9097f3bb0d7c88c4942ebd633590ee0a32
+size 132

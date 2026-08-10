@@ -1,10 +1,3 @@
-{
-    "algorithm_name": "KGW",
-    "gamma": 0.5,
-    "delta": 2.0,
-    "hash_key": 15485863,
-    "prefix_length": 1,
-    "z_threshold": 4.0,
-    "f_scheme": "time",
-    "window_scheme": "left"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:55c19e719d62d7cc36402036d98377a0c41a2200eb7b4f36e1fa2af26a6686b6
+size 194

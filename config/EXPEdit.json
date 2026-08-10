@@ -1,9 +1,3 @@
-{
-    "algorithm_name": "EXPEdit",
-    "pseudo_length": 256,
-    "sequence_length": 200,
-    "n_runs": 100,
-    "key": 42,
-    "p_threshold": 0.2,
-    "top_k": 0
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6900b5ffd812d49c5e67bb4bf98238192979f800b1025d738fe53af26d71859e
+size 163

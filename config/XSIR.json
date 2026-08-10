@@ -1,12 +1,3 @@
-{
-    "algorithm_name": "XSIR",
-    "delta": 1.0,
-    "chunk_length": 10,
-    "scale_dimension": 300,
-    "z_threshold": 0.2,
-    "transform_model_input_dim": 768,
-    "dictionary": "watermark/xsir/dictionary/dictionary.txt",
-    "transform_model_name": "watermark/xsir/model/transform_model_x-sbert_10K.pth",
-    "embedding_model_path": "watermark/xsir/model/paraphrase-multilingual-mpnet-base-v2",
-    "mapping_name": "watermark/xsir/mapping/300_mapping_opt_1_3b.json"
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a6419b26bb6c4cc243e37f4215b5eccece90c2dc353da6b4719d4d5f72187895
+size 472

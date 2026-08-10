@@ -1,19 +1,3 @@
-{
-    "seed": 29,
-    "seeding": "hash",
-    "salt_key": 35317,
-    "ngram": 6,
-    "num_seq": 10,
-    "max_gen_len": 200,
-    "n_splits": 16,
-    "beam_chunk_size": 4,
-    "top_p": 0.95,
-    "temperature": 0.85,
-    "do_sample": true,
-    "num_beams": 1,
-    "eos_value": "inf",
-    "scoring_method": "v1",
-    "pvalue_threshold": 0.05,
-    "split_len": null,
-    "emit_full_text": true
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:b229398d4ad937a999b6d26f450969b2866e208e411c16b554ae8a34adb50687
+size 407

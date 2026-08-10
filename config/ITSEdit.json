@@ -1,9 +1,3 @@
-{
-    "algorithm_name": "ITSEdit",
-    "pseudo_length": 256,
-    "sequence_length": 200,
-    "n_runs":500,
-    "key": 42,
-    "p_threshold": 0.1,
-    "top_k": 0
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ef56ef6b19b658857bc13ac778af9f06b3fc852be6dcbbd48428d3d43c962f8a
+size 162

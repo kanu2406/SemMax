@@ -22,6 +22,7 @@ from evaluation.tools.text_editor import (
 )
 from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRateCalculator
 from sklearn.metrics import roc_auc_score
+from translate import Translator
 
 MODEL_PATH = "facebook/opt-1.3b"
 VOCAB_SIZE = 50272
@@ -42,6 +43,7 @@ METHODS = ["SemMax", "Watermax", "KSEMSTAMP"]
 LOAD_KWARGS = {"SemMax": {"max_gen_len": 200}, "Watermax": {"max_gen_len": 200}, "KSEMSTAMP": {"max_gen_len": 200}}
 
 DEFAULT_ATTACKS = ["clean", "Word-D", "Word-S", "Word-S-Context", "Translation", "Paraphrase-Small"]
+DEFAULT_ATTACKS_2 = ["clean", "Word-D", "Word-S", "Word-S-Context"]
 ALL_ATTACKS     = DEFAULT_ATTACKS + ["Doc-P-Dipper"]
 
 THRESHOLD_LABELS = ["TPR", "TNR", "FPR", "FNR", "P", "R", "F1", "ACC"]
@@ -74,12 +76,7 @@ def append_line(path, obj):
 
 
 def load_outcome(path):
-    """Return (done_idx, finite_scores).
-    done_idx : idx we won't retry — a finite success OR a deterministic failure
-               (any error not starting with 'attack '). Transient attack errors
-               are NOT in done_idx, so they get retried.
-    finite_scores : idx -> finite float score.
-    """
+    """Return (done_idx, finite_scores)"""
     last = {}
     if os.path.exists(path):
         with open(path) as f:
@@ -229,6 +226,7 @@ def build_attacks(names, device):
             editors[name] = BackTranslationTextEditor(
                 translate_to_intermediary=fwd.translate,
                 translate_to_source=bwd.translate)
+            
         elif name == "Paraphrase-Small":
             print("  loading small paraphraser...")
             editors[name] = SmallParaphraser(PARA_MODEL, device)
@@ -238,8 +236,8 @@ def build_attacks(names, device):
                 tokenizer=T5Tokenizer.from_pretrained(DIPPER_TOK_PATH),
                 model=T5ForConditionalGeneration.from_pretrained(
                     DIPPER_MODEL_PATH, device_map="auto"),
-                lex_diversity=60, order_diversity=0, sent_interval=1,
-                max_new_tokens=100, do_sample=True, top_p=0.75, top_k=None)
+                lex_diversity=60, order_diversity=0, sent_interval=1)
+                # max_new_tokens=100, do_sample=True, top_p=0.75, top_k=None)
         else:
             raise ValueError(f"unknown attack {name}")
     return editors
@@ -424,7 +422,7 @@ def plot_roc(methods, attacks, out_dir=OUT_DIR):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--methods", nargs="+", default=METHODS)
-    ap.add_argument("--attacks", nargs="+", default=DEFAULT_ATTACKS,
+    ap.add_argument("--attacks", nargs="+", default=DEFAULT_ATTACKS_2,
                     help=f"choose from {ALL_ATTACKS}")
     ap.add_argument("--plot_only", action="store_true")
     args = ap.parse_args()

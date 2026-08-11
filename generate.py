@@ -44,7 +44,7 @@ GEN_KWARGS = dict(
 METHODS = {
     "SemMax":      {"load_kwargs": {"max_gen_len": TARGET_TOKENS}},
     "Watermax": {"load_kwargs": {"max_gen_len": TARGET_TOKENS}},
-    "KSEMSTAMP":   {"load_kwargs": {"max_new_tokens" : TARGET_TOKENS}},
+    "KSEMSTAMP":   {"load_kwargs": {"max_new_tokens" : TARGET_TOKENS}}
 }
 
 # --------------------------------------------------------------------------- #

@@ -75,6 +75,7 @@ class SemMax(BaseWatermark):
             num_seq=c.num_seq,
             embedder_name=c.embedder_name,
             window_size=c.window_size,
+            alpha=c.alpha,
             device=c.device,
         )
         self.detector = SemanticWmDetectorNN(
@@ -84,6 +85,7 @@ class SemMax(BaseWatermark):
             salt_key=c.salt_key,
             embedder_name=c.embedder_name,
             window_size=c.window_size,
+            alpha=c.alpha,
             device=c.device,
         )
 

@@ -141,7 +141,11 @@ python semmax_utils/finetune_embedder.py \
   --remove_unused_columns False --delta 0.8 --do_train --overwrite_output_dir
 
 # retrain reference network on BookSum
-python semmax_utils/train_reference_net.py --data dataset/booksum-pegasus-bigram=False-split
+python semmax_utils/train_reference_net.py \
+  --data ./dataset/booksum-pegasus-bigram=False-split \
+  --save_path ./semmax_utils/robust_weights_booksum.pth \
+  --embedder_name ./semmax_utils/finetuned_embedder_booksum
+
  
 # generate + evaluate with the BookSum-trained components
 PYTHONPATH=. python experiments/generalization/generate_booksum.py    # -> results/generations_booksum_in_domain

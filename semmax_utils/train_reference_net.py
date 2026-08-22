@@ -18,6 +18,7 @@ import torch
 from repro import set_seed
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+SAVE_PATH = "semmax_utils/robust_weights.pth"
 
 def split_sentences(text):
     """Same splitter as sem_max_nn.py — generator and detector must agree."""
@@ -204,7 +205,7 @@ def train(model, S, Ppar, Sidx, ctx, nxt, window=5, alpha=0.6, epochs=30,
 
 
 @torch.no_grad()
-def evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, window=5, alpha=0.6):
+def evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, window=5, alpha=0.6, save_path = SAVE_PATH):
     model.eval(); d = model.embed_dim
     s_all = []
     for i in range(0, len(val_idx), 512):
@@ -243,14 +244,16 @@ def evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, window=5, alpha
     ax[2].grid(True, ls="--", alpha=.4)
     plt.tight_layout(); os.makedirs("semmax_utils/plots", exist_ok=True)
     plt.savefig("semmax_utils/plots/train_v6.png", dpi=170)
-    torch.save(model.state_dict(), "semmax_utils/robust_weights.pth")
-    print("\nSaved -> semmax_utils/robust_weights.pth ; semmax_utils/plots/train_v6.png")
+    torch.save(model.state_dict(), save_path)
+    print(f"\nSaved -> {save_path} ; semmax_utils/plots/train_v6.png")
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", default="./semmax_utils/data/original-c4-texts-8000-pegasus-bigram=False-threshold=0.0-split")
+    ap.add_argument("--data", default="./semmax_utils/semstamp-data/original-c4-texts-8000-pegasus-bigram=False-threshold=0.0-split")
     ap.add_argument("--window", type=int, default=5)
+    ap.add_argument("--save_path", type=str, default=SAVE_PATH)
+    ap.add_argument("--embedder_name", type=str, default='./semmax_utils/finetuned_embedder')
     ap.add_argument("--alpha", type=float, default=0.6)
     ap.add_argument("--epochs", type=int, default=30)
     ap.add_argument("--w-nce", type=float, default=1.0)
@@ -264,12 +267,12 @@ def main():
     print(f"seed={args.seed} torch={torch.__version__} "
       f"cuda={torch.version.cuda} device={torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'cpu'}")
 
-    S, Ppar, Sidx, ctx, nxt = load_data(args.data, args.window)
+    S, Ppar, Sidx, ctx, nxt = load_data(args.data, args.window,args.embedder_name)
     model = RobustNetwork(embed_dim=S.shape[1]).to(device)
     hist, val_idx = train(model, S, Ppar, Sidx, ctx, nxt, window=args.window,
                           alpha=args.alpha, epochs=args.epochs, w_nce=args.w_nce,
                           w_null=args.w_null, tau=args.tau)
-    evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, args.window, args.alpha)
+    evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, args.window, args.alpha,args.save_path)
     del S, Ppar, Sidx, ctx, nxt, model; gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()

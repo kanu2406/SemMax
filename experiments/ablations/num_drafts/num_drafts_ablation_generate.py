@@ -26,6 +26,7 @@ TARGET_TOKENS = 200
 SEED          = 29
 
 DEFAULT_NUM_SEQ = [1, 5, 10, 20, 30, 50, 75, 100]
+# DEFAULT_NUM_SEQ = [1, 5, 10]
 
 GEN_KWARGS = dict(
     max_new_tokens=TARGET_TOKENS,

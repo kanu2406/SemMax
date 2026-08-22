@@ -20,7 +20,8 @@ from evaluation.tools.text_editor import (
     BackTranslationTextEditor, DipperParaphraser,
 )
 
-from experiments.common.io import strip_prompt
+from experiments.common.io import strip_prompt,to_jsonable, append_line, load_outcome
+from experiments.common.detect import detect
 
 BERT_PATH  = "bert-large-uncased"
 
@@ -93,7 +94,6 @@ class CropAttack:
 
 
 
-
 def build_attacks(names, device):
     ed = {}
     for n in names:
@@ -127,29 +127,6 @@ def build_attacks(names, device):
         else:
             raise ValueError(f"unknown attack {n}")
     return ed
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -114,7 +114,7 @@ def main():
             recs = recs_cache[(method, temp)]
             pos_f, n_fail = get_scores(recs, "detect_watermarked")
             neg_f, _ = get_scores(recs, "detect_unwatermarked")
-            au = auroc(pos_f, n_fail, neg_f)
+            au = auroc(pos_f, neg_f, n_fail)
             tpr1 = tpr_at_fpr(pos_f, n_fail, neg_f, 0.01)
             tpr5 = tpr_at_fpr(pos_f, n_fail, neg_f, 0.05)
             wm = {i: cache.get(f"{method}:{temp}:wm:{i}") for i in recs}

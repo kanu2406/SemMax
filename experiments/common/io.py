@@ -3,6 +3,19 @@ import os
 import json
 import math
 import argparse
+import gc
+
+import torch
+import numpy as np
+import csv
+import re
+
+THRESHOLD_LABELS = ["TPR", "TNR", "FPR", "FNR", "P", "R", "F1", "ACC"]
+RULES = [("best", {"rule": "best"}),
+         ("tpr@0.01fpr", {"rule": "target_fpr", "target_fpr": 0.01}),
+         ("tpr@0.05fpr", {"rule": "target_fpr", "target_fpr": 0.05})]
+
+
 
 
 def load_lines(path):
@@ -91,9 +104,12 @@ def load_prompts(path: str, n: int):
 
 
 
+# def akey(a):
+#     """Canonical 2-decimal string for filenames/keys so 0.1 and 0.10 never diverge."""
+#     return f"{a:.2f}"
 def akey(a):
-    """Canonical 2-decimal string for filenames/keys so 0.1 and 0.10 never diverge."""
-    return f"{a:.2f}"
+    return round(float(a), 2)          # canonical float key, avoids 0.1 vs 0.10 drift
+
 
 
 

@@ -137,7 +137,7 @@ def density_plot(groups, null_key, title, path, order=None):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--methods", nargs="+", default=METHODS)
-    ap.add_argument("--out", default="score_analysis")
+    ap.add_argument("--out", default="results/score_analysis")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
 

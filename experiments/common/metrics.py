@@ -21,6 +21,15 @@ from evaluation.tools.text_editor import (
 )
 from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRateCalculator
 from sklearn.metrics import roc_auc_score
+from experiments.common.io import load_outcome, to_jsonable, append_line
+
+
+THRESHOLD_LABELS = ["TPR", "TNR", "FPR", "FNR", "P", "R", "F1", "ACC"]
+RULES = [("best", {"rule": "best"}),
+         ("tpr@0.01fpr", {"rule": "target_fpr", "target_fpr": 0.01}),
+         ("tpr@0.05fpr", {"rule": "target_fpr", "target_fpr": 0.05})]
+
+
 
 def describe(vals):
     a = np.asarray(vals, float)
@@ -78,6 +87,9 @@ def safe_ppl(ppl, text):
             return float(ppl.analyze(text))
     except Exception:
         return None
+
+
+
 
 
 

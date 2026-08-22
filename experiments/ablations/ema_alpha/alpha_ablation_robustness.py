@@ -97,7 +97,7 @@ def main():
                                top_p=0.95, temperature=0.85, no_repeat_ngram_size=4)
     wm = AutoWatermark.load("SemMax", algorithm_config="config/SemMax.json",
                             transformers_config=tconf, max_gen_len=200)
-    editors = build_attacks(args.attacks, device, filler_pool)
+    editors = build_attacks(args.attacks, device)
 
     ppl = om = None
     if not args.no_ppl:

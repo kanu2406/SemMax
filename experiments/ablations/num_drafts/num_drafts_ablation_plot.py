@@ -167,9 +167,9 @@ def main():
         rows.append({
             "num_seq": n,
             "n_pos": len(pos), "n_neg": len(neg), "n_fail": n_fail,
-            "AUROC": auroc(pos, neg),
-            "TPR@FPR=1%": tpr_at_fpr(pos, neg, 0.01),
-            "TPR@FPR=5%": tpr_at_fpr(pos, neg, 0.05),
+            "AUROC": auroc(pos, neg, n_fail),
+            "TPR@FPR=1%": tpr_at_fpr(pos,n_fail, neg, 0.01),
+            "TPR@FPR=5%": tpr_at_fpr(pos,n_fail, neg, 0.05),
             "mean_gen_time_s": round(float(np.mean(times)), 3) if times else float("nan"),
             "rel_ppl": round(float(np.mean(ratios)), 4) if ratios else float("nan"),
             "mean_ppl_wm": round(float(np.mean(list(wm_ppl.values()))), 3) if wm_ppl else float("nan"),

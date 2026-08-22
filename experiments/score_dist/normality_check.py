@@ -138,8 +138,8 @@ def plot_normality(vals, title, path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--methods", nargs="+", default=METHODS)
-    ap.add_argument("--source", choices=["generations", "robustness"], default="generations")
-    ap.add_argument("--out", default="score_analysis")
+    ap.add_argument("--source", choices=["results/generations", "results/robustness"], default="generations")
+    ap.add_argument("--out", default="results/score_analysis")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
 

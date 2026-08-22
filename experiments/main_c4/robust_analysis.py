@@ -23,9 +23,9 @@ from evaluation.tools.text_editor import (
 from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRateCalculator
 from sklearn.metrics import roc_auc_score
 from translate import Translator
-from experiments.common.io import to_jsonable, append_line, load_outcome, strip_prompt, _cleanup, write_summary_csv, load_generations
+from experiments.common.io import strip_prompt, _cleanup, write_summary_csv, load_generations
 from experiments.common.detect import detect
-from experiments.common.attacks import MarianTranslator, SmallParaphraser, build_attacks, apply_attack, run_attack
+from experiments.common.attacks import MarianTranslator, SmallParaphraser, build_attacks, apply_attack, run_attack, append_line, to_jsonable
 from experiments.common.metrics import compute_all_metrics, get_pos_neg
 
 MODEL_PATH = "facebook/opt-1.3b"
@@ -59,6 +59,41 @@ RULES = [("best", {"rule": "best"}),
 
 
 
+def load_outcome(path):
+    """Return (done_idx, finite_scores)"""
+    last = {}
+    if os.path.exists(path):
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if r.get("idx") is not None:
+                    last[r["idx"]] = r
+
+    done, finite = set(), {}
+    for i, r in last.items():
+        val = None
+        if r.get("error") is None and r.get("score") is not None:
+            try:
+                v = float(r["score"])
+                if math.isfinite(v):
+                    val = v
+            except (TypeError, ValueError):
+                pass
+        if val is not None:
+            finite[i] = val
+            done.add(i)
+        else:
+            err = str(r.get("error") or "")
+            if not err.startswith("attack "):   # deterministic failure -> done (a miss)
+                done.add(i)
+    return done, finite
+
 
 def load_watermark(method, device, model_path = "facebook/opt-1.3b",  vocab_size = 50272 ):
     model = AutoModelForCausalLM.from_pretrained(model_path).to(device)
@@ -76,8 +111,8 @@ def load_watermark(method, device, model_path = "facebook/opt-1.3b",  vocab_size
 
 
 
-def compute_negatives(method, wm, recs):
-    path = os.path.join(OUT_DIR, f"{method}__negative.jsonl")
+def compute_negatives(method, wm, recs, output_path = OUT_DIR):
+    path = os.path.join(output_path, f"{method}__negative.jsonl")
     done, _ = load_outcome(path)
     todo = [r for r in recs if r["idx"] not in done and r.get("unwatermarked_text")]
     if todo:
@@ -140,30 +175,32 @@ def main():
     ap.add_argument("--methods", nargs="+", default=METHODS)
     ap.add_argument("--attacks", nargs="+", default=ALL_ATTACKS,
                     help=f"choose from {ALL_ATTACKS}")
+    ap.add_argument("--generations_path",type=str,default=GEN_DIR,help="path to the generations JSONL file")
+    ap.add_argument("--output_path",type=str,default=OUT_DIR,help="path to the output folder")
     ap.add_argument("--plot_only", action="store_true")
     args = ap.parse_args()
 
-    os.makedirs(OUT_DIR, exist_ok=True)
+    os.makedirs(args.output_path, exist_ok=True)
 
     if args.plot_only:
-        plot_roc(args.methods, args.attacks)
+        plot_roc(args.methods, args.attacks, args.output_path)
         return
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     editors = build_attacks(args.attacks, device)
 
-    summary_path = os.path.join(OUT_DIR, "summary.jsonl")
+    summary_path = os.path.join(args.output_path, "summary.jsonl")
     for method in args.methods:
-        recs = load_generations(method, GEN_DIR)
+        recs = load_generations(method,args.generations_path)
         if not recs:
             continue
         print(f"\n=== {method} ===  {len(recs)} generations")
         wm, model = load_watermark(method, device)
         try:
-            compute_negatives(method, wm, recs)
+            compute_negatives(method, wm, recs, args.output_path)
             for attack in args.attacks:
-                run_attack(method, attack, editors[attack], wm, recs, OUT_DIR)
-                pos, neg = get_pos_neg(method, attack, OUT_DIR)
+                run_attack(method, attack, editors[attack], wm, recs, args.output_path)
+                pos, neg = get_pos_neg(method, attack, args.output_path)
                 row = {"method": method, "attack": attack}
                 row.update(compute_all_metrics(pos, neg))
                 append_line(summary_path, row)
@@ -174,8 +211,8 @@ def main():
         finally:
             _cleanup(wm, model)
 
-    write_summary_csv(summary_path, os.path.join(OUT_DIR, "summary.csv"))
-    plot_roc(args.methods, args.attacks)
+    write_summary_csv(summary_path, os.path.join(args.output_path, "summary.csv"))
+    plot_roc(args.methods, args.attacks,args.output_path)
 
     print("\n============== SUMMARY (AUROC | TPR) ==============")
     print(f"{'method':12s} {'attack':16s} {'AUROC':>7s} {'best':>7s} {'tpr@1fpr':>7s} {'tpr@5fpr':>7s}")

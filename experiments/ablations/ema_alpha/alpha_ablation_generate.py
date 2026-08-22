@@ -22,6 +22,7 @@ NUM_PROMPTS   = 100
 TARGET_TOKENS = 200
 SEED          = 29
 DEFAULT_ALPHAS = [0.1, 0.2, 0.4, 0.6, 0.7, 0.8, 0.95]
+# DEFAULT_ALPHAS = [0.1, 0.6, 0.95]
 
 GEN_KWARGS = dict(max_new_tokens=TARGET_TOKENS, do_sample=True, top_p=0.95,
                   temperature=0.85, no_repeat_ngram_size=4)

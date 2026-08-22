@@ -11,7 +11,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from watermark.auto_watermark import AutoWatermark
 from utils.transformers_config import TransformersConfig
 
-from experiments.common.io import akey, set_seed, convert, load_prompts, done_indices, write_rec, ntokens
+from experiments.common.io import akey, set_seed, convert, load_prompts, done_indices, write_rec, ntokens, _cleanup
 from experiments.common.detect import safe_detect
 
 
@@ -22,7 +22,8 @@ OUT_DIR       = "results/temp_var"
 NUM_PROMPTS   = 100
 TARGET_TOKENS = 200
 SEED          = 29
-TEMPS         = [0.8, 0.9, 1.0, 1.1, 1.2]     
+TEMPS         = [0.8, 0.9, 1.0, 1.1, 1.2]    
+# TEMPS         = [0.8, 1.1, 1.2]     
 
 BASE_GEN_KWARGS = dict(max_new_tokens=TARGET_TOKENS, do_sample=True,
                        top_p=0.95, no_repeat_ngram_size=4)   # temperature added per T

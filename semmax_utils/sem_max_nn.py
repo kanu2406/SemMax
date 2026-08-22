@@ -65,11 +65,12 @@ class SemanticWmGeneratorNN:
             model,
             tokenizer,
             seed: int = 29,
-            weights_path: str = "robust_hasher_weights.pth",
+            weights_path: str = "robust_weights.pth",
             salt_key: int = 35317,
             num_seq: int = 8,
             embedder_name: str = 'BAAI/bge-base-en-v1.5',
             window_size: int = 5,
+            alpha: float = 0.6,
             device: str = "cuda" if torch.cuda.is_available() else "cpu"
         ):
 
@@ -80,13 +81,14 @@ class SemanticWmGeneratorNN:
         self.num_seq = num_seq
         self.window_size = window_size
         self.device = device
+        self.alpha =  alpha
 
-        print(f"Loading Soft-Hash Semantic Embedder: {embedder_name}...")
+        print(f"Loading Semantic Embedder: {embedder_name}...")
         self.embedder = SentenceTransformer(embedder_name).to(self.device)
         self.embed_dim = self.embedder.get_sentence_embedding_dimension()
         self.sentence_r_cache = {}
 
-        print(f"Loading Learned Hasher from {weights_path}...")
+        print(f"Loading Learned weights from {weights_path}...")
         self.hash_net = RobustNetwork().to(self.device)
         
         # Failsafe in case weights aren't trained yet
@@ -103,6 +105,7 @@ class SemanticWmGeneratorNN:
         """
         clean_history = [s.strip() for s in prev_sentences if s.strip()]
         window_size = self.window_size
+        alpha = self.alpha
 
    
         active_window = clean_history[-window_size:]
@@ -195,7 +198,7 @@ class SemanticWmGeneratorNN:
                     continue 
 
                 # 1. Get EMA Context Vector
-                r_tensor = self.get_multi_context_r_vector(sentence_history[batch_idx], alpha=0.6)
+                r_tensor = self.get_multi_context_r_vector(sentence_history[batch_idx], alpha=self.alpha)
 
                 start_idx = batch_idx * self.num_seq
                 end_idx = start_idx + self.num_seq
@@ -232,10 +235,11 @@ class SemanticWmDetectorNN:
     def __init__(self,
             tokenizer,
             seed: int = 29,
-            weights_path: str = "robust_hasher_weights.pth",
+            weights_path: str = "robust_weights.pth",
             salt_key: int = 35317,
             embedder_name: str = 'BAAI/bge-base-en-v1.5',
             window_size: int = 5,
+            alpha: float = 0.6,
             device: str = "cuda" if torch.cuda.is_available() else "cpu",
         ):
 
@@ -243,14 +247,15 @@ class SemanticWmDetectorNN:
         self.seed = seed
         self.salt_key = salt_key
         self.window_size = window_size
+        self.alpha = alpha
         self.device = device
 
-        print(f"Loading Soft-Hash Semantic Detector Embedder: {embedder_name}...")
+        print(f"Loading Semantic Detector Embedder: {embedder_name}...")
         self.embedder = SentenceTransformer(embedder_name).to(self.device)
         self.embed_dim = self.embedder.get_sentence_embedding_dimension()
         self.sentence_r_cache = {}
 
-        print(f"Loading Learned Hasher from {weights_path}...")
+        print(f"Loading Learned from {weights_path}...")
         self.hash_net = RobustNetwork().to(self.device)
         try:
             self.hash_net.load_state_dict(torch.load(weights_path, map_location=device))
@@ -265,6 +270,7 @@ class SemanticWmDetectorNN:
         """
         clean_history = [s.strip() for s in prev_sentences if s.strip()]
         window_size = self.window_size
+        alpha = self.alpha
 
         # 1. Truncate the history to the sliding window BEFORE applying EMA
         active_window = clean_history[-window_size:]
@@ -316,7 +322,7 @@ class SemanticWmDetectorNN:
                     prev_sentences = sentences[:i]
                     
                     # We pass alpha=0.6 here to ensure detector matches generator
-                    r_tensor = self.get_multi_context_r_vector(prev_sentences, alpha=0.6)
+                    r_tensor = self.get_multi_context_r_vector(prev_sentences, alpha=self.alpha)
 
                     v_current = self.embedder.encode(current_sentence, convert_to_tensor=True, normalize_embeddings=True,show_progress_bar=False)
 

@@ -62,7 +62,7 @@ def build_transformers_config(device: str):
 # Per-method run
 # --------------------------------------------------------------------------- #
 
-def run_method(method: str, prompts, device: str):
+def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
     out_path = os.path.join(OUT_DIR, f"{method}.jsonl")
     done = done_indices(out_path)
     remaining = [i for i in range(len(prompts)) if i not in done]
@@ -138,6 +138,8 @@ def main():
     ap.add_argument("--methods", nargs="+", default=list(METHODS.keys()),
                     help="subset of methods to run")
     ap.add_argument("--num_prompts", type=int, default=NUM_PROMPTS)
+    ap.add_argument("--dataset_path",type=str,default=DATASET_PATH,help="path to the processed dataset JSONL file")
+    ap.add_argument("--output_path",type=str,default=OUT_DIR,help="path to the output folder")
     args = ap.parse_args()
 
     for m in args.methods:
@@ -146,12 +148,12 @@ def main():
 
     os.makedirs(OUT_DIR, exist_ok=True)
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    prompts = load_prompts(DATASET_PATH, args.num_prompts)
+    prompts = load_prompts(args.dataset_path, args.num_prompts)
     print(f"Loaded {len(prompts)} prompts | model={MODEL_PATH} | device={device} "
           f"| target={TARGET_TOKENS} toks")
 
     for method in args.methods:
-        run_method(method, prompts, device)
+        run_method(method, prompts, device, args.output_path)
 
     print("\nAll done.")
 

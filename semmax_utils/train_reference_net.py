@@ -249,7 +249,7 @@ def evaluate(model, S, Ppar, Sidx, ctx, nxt, val_idx, hist,args, window=5, alpha
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", default="./semmax_utils/semstamp-data/original-c4-texts-8000-pegasus-bigram=False-threshold=0.0-split")
+    ap.add_argument("--data", default="./semmax_utils/data/original-c4-texts-8000-pegasus-bigram=False-threshold=0.0-split")
     ap.add_argument("--window", type=int, default=5)
     ap.add_argument("--alpha", type=float, default=0.6)
     ap.add_argument("--epochs", type=int, default=30)

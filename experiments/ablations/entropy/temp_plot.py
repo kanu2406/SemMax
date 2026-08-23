@@ -13,7 +13,7 @@ from evaluation.tools.text_quality_analyzer import PPLCalculator
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRateCalculator
 from experiments.common.io import load_lines, last_by_idx, strip_prompt, sent_split, akey, load_kv, append
-from experiments.common. detect import score_from_detect
+from experiments.common.detect import score_from_detect
 from experiments.common.metrics import auroc, tpr_at_fpr, safe_ppl
 
 DIR = "results/temp_var"

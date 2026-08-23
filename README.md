@@ -86,8 +86,8 @@ All ablations use the same 100 C4 prompts.
 
 9. **Alpha (EMA context) **
    ```bash
-   PYTHONPATH=. python experiments/ablations/ema_context/alpha_ablation_generate.py     
-   PYTHONPATH=. python experiments/ablations/ema_context/alpha_ablation_robustness.py   
+   PYTHONPATH=. python experiments/ablations/ema_alpha/alpha_ablation_generate.py     
+   PYTHONPATH=. python experiments/ablations/ema_alpha/alpha_ablation_robustness.py   
    ```
 10. **Number of drafts (`num_seq`) **
     ```bash
@@ -148,7 +148,7 @@ python semmax_utils/train_reference_net.py \
 
  
 # generate + evaluate with the BookSum-trained components
-PYTHONPATH=. python experiments/generalization/generate_booksum.py    # -> results/generations_booksum_in_domain
-PYTHONPATH=. python experiments/generalization/robust_booksum.py      # -> results/robustness_booksum_in_domain
+PYTHONPATH=. python experiments/generalization_booksum/generate_booksum.py    # -> results/generations_booksum_in_domain
+PYTHONPATH=. python experiments/generalization_booksum/robust_booksum.py      # -> results/robustness_booksum_in_domain
 ```
 

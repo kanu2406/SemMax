@@ -63,7 +63,7 @@ def build_transformers_config(device: str):
 # --------------------------------------------------------------------------- #
 
 def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
-    out_path = os.path.join(OUT_DIR, f"{method}.jsonl")
+    out_path = os.path.join(output_path, f"{method}.jsonl")
     done = done_indices(out_path)
     remaining = [i for i in range(len(prompts)) if i not in done]
     print(f"\n=== {method} ===  {len(done)} done, {len(remaining)} to go -> {out_path}")
@@ -146,7 +146,8 @@ def main():
         if m not in METHODS:
             raise ValueError(f"unknown method {m}; known: {list(METHODS)}")
 
-    os.makedirs(OUT_DIR, exist_ok=True)
+    os.makedirs(args.output_path, exist_ok=True)
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
     prompts = load_prompts(args.dataset_path, args.num_prompts)
     print(f"Loaded {len(prompts)} prompts | model={MODEL_PATH} | device={device} "

@@ -1,0 +1,2 @@
+method,group,n,mean,std,skew,excess_kurtosis,shapiro_p,ks_vs_N01_p
+SemMax,unwatermarked,100,-0.0843,1.1721,-0.061,-0.5183,0.52536,0.38595

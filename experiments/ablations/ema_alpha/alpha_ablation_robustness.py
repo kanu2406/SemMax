@@ -26,7 +26,7 @@ from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRate
 from transformers import (AutoModelForCausalLM, AutoTokenizer, AutoModelForSeq2SeqLM,
                           BertTokenizer, BertForMaskedLM)
 from experiments.common.io import load_lines, last_by_idx, strip_prompt, sent_split, akey, load_kv, append
-from experiments.common. detect import det_score
+from experiments.common.detect import det_score
 from experiments.common.metrics import auroc, tpr_at_fpr, safe_ppl
 from experiments.common.attacks import CropAttack, MarianTranslator, SmallParaphraser, build_attacks, apply_attack
 
@@ -79,14 +79,14 @@ def main():
     unwm_text = {i: r.get("unwatermarked_text") for i, r in neg_recs.items()
                  if not r.get("error") and r.get("unwatermarked_text")}
 
-    filler_pool = []
-    for r in neg_recs.values():
-        nt = r.get("natural_text")
-        if nt:
-            filler_pool.extend(sent_split(nt))
-    filler_pool = [s for s in filler_pool if len(s.split()) >= 4]
-    if not filler_pool:
-        filler_pool = ["This is an unrelated sentence added by the editor."]
+    # filler_pool = []
+    # for r in neg_recs.values():
+    #     nt = r.get("natural_text")
+    #     if nt:
+    #         filler_pool.extend(sent_split(nt))
+    # filler_pool = [s for s in filler_pool if len(s.split()) >= 4]
+    # if not filler_pool:
+    #     filler_pool = ["This is an unrelated sentence added by the editor."]
 
     model = AutoModelForCausalLM.from_pretrained(MODEL_PATH).to(device)
     tok = AutoTokenizer.from_pretrained(MODEL_PATH)

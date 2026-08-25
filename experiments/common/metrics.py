@@ -58,6 +58,13 @@ def compute_all_metrics(pos, neg):
     return out
 
 
+def safe(fn, *args):
+    try:
+        v = fn(*args)
+        return float(v) if v is not None else None
+    except Exception:
+        return None
+
 
 
 def get_pos_neg(method, attack, out_dir):

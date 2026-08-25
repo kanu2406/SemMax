@@ -14,10 +14,6 @@ from utils.transformers_config import TransformersConfig
 from experiments.common.io import convert, _cleanup, done_indices, set_seed, load_prompts, ntokens
 from experiments.common.detect import safe_detect
 
-# --------------------------------------------------------------------------- #
-# Configuration
-# --------------------------------------------------------------------------- #
-
 MODEL_PATH   = "facebook/opt-1.3b"        # ALL methods use this one model
 VOCAB_SIZE   = 50272                       # OPT-1.3b
 DATASET_PATH = "dataset/c4/processed_c4.json"
@@ -58,10 +54,7 @@ def build_transformers_config(device: str):
 
 
 
-# --------------------------------------------------------------------------- #
 # Per-method run
-# --------------------------------------------------------------------------- #
-
 def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
     out_path = os.path.join(output_path, f"{method}.jsonl")
     done = done_indices(out_path)
@@ -83,7 +76,7 @@ def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
         _cleanup(model)
         return
 
-    # append mode = never clobber earlier progress
+    
     with open(out_path, "a") as fout:
         for count, i in enumerate(remaining, 1):
             item = prompts[i]
@@ -127,11 +120,6 @@ def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
 
 
 
-
-
-# --------------------------------------------------------------------------- #
-# Main
-# --------------------------------------------------------------------------- #
 
 def main():
     ap = argparse.ArgumentParser()

@@ -1,0 +1,4 @@
+method,n,ppl_wm,ppl_unwm,log_diversity_wm,log_diversity_unwm,bleu_wm,bleu_unwm,rouge1_wm,rouge1_unwm,rouge2_wm,rouge2_unwm,rougeL_wm,rougeL_unwm,bertscore_wm,bertscore_unwm,rel_ppl
+SemMax,100,10.0724,11.2188,7.069,8.7415,1.7097,1.794,0.2904,0.2828,0.0303,0.0304,0.1427,0.1375,0.5064,0.5058,1.0506
+Watermax,100,8.375,10.9658,7.3902,8.2742,3.372,3.118,0.3249,0.3157,0.0492,0.0463,0.1538,0.15,0.5294,0.528,0.8257
+KSEMSTAMP,100,10.9574,11.1148,8.1819,8.2358,2.9438,3.1491,0.311,0.3133,0.046,0.0476,0.1483,0.1504,0.5247,0.5261,1.0829

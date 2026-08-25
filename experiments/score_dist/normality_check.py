@@ -1,35 +1,4 @@
-"""
-normality_check.py — is the detection statistic's NULL distribution normal (and
-standard-normal)? This validates the analytic p-value / fixed-threshold FPR.
 
-Tests the scores on UNWATERMARKED (and natural/human) text — the null — since that
-is what norm.sf(z) assumes is N(0,1). Watermarked scores are shifted by design and
-are NOT expected to be normal.
-
-Per (method, null group) it writes a 2-panel figure:
-  (left)  histogram + fitted-normal PDF + N(0,1) reference
-  (right) Q-Q plot vs standard normal, with the fit line and the y=x (N(0,1)) line
-and a stats row: n, mean, std, skew, excess kurtosis, Shapiro p (shape),
-KS-vs-N(0,1) p (calibration).
-
-Reading it (for a z-statistic like SemMax):
-  * mean ~ 0 and std ~ 1  -> calibrated; analytic p-values valid.
-  * std > 1               -> p-values anti-conservative (real FPR ABOVE nominal).
-  * std < 1               -> conservative.
-  * mean != 0             -> systematic bias (e.g. embedding anisotropy).
-  * Q-Q curved / low Shapiro p -> non-normal; the Gaussian tail (hence low-FPR
-    p-values) is unreliable even after recentering/scaling.
-NOTE: methods whose score is not a z (e.g. Watermax = -log10 p, ~exponential null)
-will correctly reject normality — that's expected, not a bug.
-
-Sources (no models, no re-detection):
-  generations/{method}.jsonl  -> detect_unwatermarked / detect_natural
-  robustness/{method}__negative.jsonl -> stripped unwatermarked (with --source robustness)
-
-Usage:
-  python normality_check.py
-  python normality_check.py --methods SemMax --source robustness
-"""
 
 import os
 import json
@@ -137,8 +106,8 @@ def plot_normality(vals, title, path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--methods", nargs="+", default=METHODS)
-    ap.add_argument("--source", choices=["results/generations", "results/robustness"], default="generations")
+    ap.add_argument("--methods", nargs="+", default=["SemMax"])
+    ap.add_argument("--source", choices=["results/generations", "results/robustness"], default="results/generations")
     ap.add_argument("--out", default="results/score_analysis")
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)

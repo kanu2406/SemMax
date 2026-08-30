@@ -63,6 +63,7 @@ def main():
         return
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
+    # --- PPL cache (method:temp:role:idx) ---
     cache_path = os.path.join(args.dir, "quality_cache.jsonl")
     cache = {}
     if os.path.exists(cache_path):

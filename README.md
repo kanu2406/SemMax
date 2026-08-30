@@ -84,17 +84,17 @@ distribution → E. cross-domain.** B–E depend on the checkpoints from A.
 
 All ablations use the same 100 C4 prompts. 
 
-9. **Alpha (EMA context) **
+9. **Alpha (EMA context)**
    ```bash
    PYTHONPATH=. python experiments/ablations/ema_alpha/alpha_ablation_generate.py     
    PYTHONPATH=. python experiments/ablations/ema_alpha/alpha_ablation_robustness.py   
    ```
-10. **Number of drafts (`num_seq`) **
+10. **Number of drafts (`num_seq`)**
     ```bash
     PYTHONPATH=. python experiments/ablations/num_drafts/num_drafts_ablation_generate.py
     PYTHONPATH=. python experiments/ablations/num_drafts/num_drafts_ablation_plot.py
     ```
-11. **Entropy / temperature **
+11. **Entropy / temperature**
     ```bash
     PYTHONPATH=. python experiments/ablations/entropy/temp_generate.py
     PYTHONPATH=. python experiments/ablations/entropy/temp_plot.py
@@ -145,6 +145,10 @@ python semmax_utils/train_reference_net.py \
   --data ./dataset/booksum-pegasus-bigram=False-split \
   --save_path ./semmax_utils/robust_weights_booksum.pth \
   --embedder_name ./semmax_utils/finetuned_embedder_booksum
+
+# generate clusters for k_semstamp
+
+python -m semmax_utils.sampling_kmeans_utils "semmax_utils/data/original-booksum-texts"     "semmax_utils/finetuned_embedder_booksum"     8
 
  
 # generate + evaluate with the BookSum-trained components

@@ -22,7 +22,7 @@ METHODS = ["SemMax", "Watermax", "KSEMSTAMP"]
 def null_groups(method, source):
     """Return {group_label: [scores]} for the null distribution(s)."""
     out = {}
-    if source == "generations":
+    if source == "results/generations":
         recs = load_lines(os.path.join(GEN_DIR, f"{method}.jsonl"))
         for grp, key in (("unwatermarked", "detect_unwatermarked"),
                          ("natural", "detect_natural")):

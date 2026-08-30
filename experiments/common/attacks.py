@@ -20,7 +20,7 @@ from evaluation.tools.text_editor import (
     BackTranslationTextEditor, DipperParaphraser,
 )
 
-from experiments.common.io import strip_prompt,to_jsonable, append_line, load_outcome
+from experiments.common.io import strip_prompt,to_jsonable, append_line, load_outcome, sent_split
 from experiments.common.detect import detect
 
 BERT_PATH  = "bert-large-uncased"
@@ -33,8 +33,6 @@ PARA_PREFIX = "paraphrase: "
 
 DIPPER_TOK_PATH   = "google/t5-v1_1-xxl"
 DIPPER_MODEL_PATH = "kalpeshk2011/dipper-paraphraser-xxl"
-
-
 
 
 

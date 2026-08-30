@@ -32,7 +32,6 @@ ALL_METRICS        = DIRECT_METRICS + REFERENCED_METRICS
 
 
 
-
 def mean_ignore_none(vals):
     vs = [v for v in vals if v is not None and not (isinstance(v, float) and math.isnan(v))]
     return (float(np.mean(vs)), len(vs)) if vs else (float("nan"), 0)
@@ -63,7 +62,7 @@ def main():
     cache_path = os.path.join(args.dir, "quality_all_cache.jsonl")
     cache = load_cache(cache_path)
 
-    
+    # what still needs scoring?
     todo = []
     for method, recs in records.items():
         for idx, r in recs.items():
@@ -96,7 +95,7 @@ def main():
     else:
         print("all texts already cached.")
 
-    
+    # --- aggregate per method ---
     import csv
     cols = ["method", "n"]
     for m in ALL_METRICS:
@@ -126,7 +125,7 @@ def main():
         w.writerows(rows)
     print(f"\nwrote {csv_path}")
 
- 
+    # readable table (watermarked scores + relative PPL)
     print("\n=== watermarked-text quality (means) ===")
     hdr = f"{'method':12s}" + "".join(f"{m:>12s}" for m in ALL_METRICS) + f"{'rel_ppl':>10s}"
     print(hdr)

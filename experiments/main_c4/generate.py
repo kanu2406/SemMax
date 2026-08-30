@@ -14,6 +14,10 @@ from utils.transformers_config import TransformersConfig
 from experiments.common.io import convert, _cleanup, done_indices, set_seed, load_prompts, ntokens
 from experiments.common.detect import safe_detect
 
+# --------------------------------------------------------------------------- #
+# Configuration
+# --------------------------------------------------------------------------- #
+
 MODEL_PATH   = "facebook/opt-1.3b"        # ALL methods use this one model
 VOCAB_SIZE   = 50272                       # OPT-1.3b
 DATASET_PATH = "dataset/c4/processed_c4.json"
@@ -33,6 +37,7 @@ GEN_KWARGS = dict(
 METHODS = {
     "SemMax":      {"load_kwargs": {"max_gen_len": TARGET_TOKENS}},
     "Watermax": {"load_kwargs": {"max_gen_len": TARGET_TOKENS}},
+    "Watermax_rob": {"load_kwargs": {"max_gen_len": TARGET_TOKENS}},
     "KSEMSTAMP":   {"load_kwargs": {"max_new_tokens" : TARGET_TOKENS}}
 }
 
@@ -54,7 +59,10 @@ def build_transformers_config(device: str):
 
 
 
+# --------------------------------------------------------------------------- #
 # Per-method run
+# --------------------------------------------------------------------------- #
+
 def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
     out_path = os.path.join(output_path, f"{method}.jsonl")
     done = done_indices(out_path)
@@ -76,7 +84,7 @@ def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
         _cleanup(model)
         return
 
-    
+    # append mode = never clobber earlier progress
     with open(out_path, "a") as fout:
         for count, i in enumerate(remaining, 1):
             item = prompts[i]
@@ -121,6 +129,11 @@ def run_method(method: str, prompts, device: str, output_path = OUT_DIR):
 
 
 
+
+# --------------------------------------------------------------------------- #
+# Main
+# --------------------------------------------------------------------------- #
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--methods", nargs="+", default=list(METHODS.keys()),
@@ -135,12 +148,12 @@ def main():
             raise ValueError(f"unknown method {m}; known: {list(METHODS)}")
 
     os.makedirs(args.output_path, exist_ok=True)
-
     device = "cuda" if torch.cuda.is_available() else "cpu"
     prompts = load_prompts(args.dataset_path, args.num_prompts)
     print(f"Loaded {len(prompts)} prompts | model={MODEL_PATH} | device={device} "
           f"| target={TARGET_TOKENS} toks")
 
+    
     for method in args.methods:
         run_method(method, prompts, device, args.output_path)
 

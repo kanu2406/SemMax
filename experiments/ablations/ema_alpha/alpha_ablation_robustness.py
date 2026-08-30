@@ -26,7 +26,7 @@ from evaluation.tools.success_rate_calculator import DynamicThresholdSuccessRate
 from transformers import (AutoModelForCausalLM, AutoTokenizer, AutoModelForSeq2SeqLM,
                           BertTokenizer, BertForMaskedLM)
 from experiments.common.io import load_lines, last_by_idx, strip_prompt, sent_split, akey, load_kv, append
-from experiments.common.detect import det_score
+from experiments.common. detect import det_score
 from experiments.common.metrics import auroc, tpr_at_fpr, safe_ppl
 from experiments.common.attacks import CropAttack, MarianTranslator, SmallParaphraser, build_attacks, apply_attack
 
@@ -47,7 +47,7 @@ DIPPER_MODEL_PATH = "kalpeshk2011/dipper-paraphraser-xxl"
 
 
 DEFAULT_ATTACKS = ["clean", "Word-D", "Word-S", "Crop-0.25", "Crop-0.5", "Crop-0.75","Doc-P-Dipper","Translation"]
-DEFAULT_ATTACKS = ["clean", "Word-D", "Word-S","Doc-P-Dipper","Translation"]
+
 # --------------------------------------------------------------------------- #
 
 
@@ -79,14 +79,14 @@ def main():
     unwm_text = {i: r.get("unwatermarked_text") for i, r in neg_recs.items()
                  if not r.get("error") and r.get("unwatermarked_text")}
 
-    # filler_pool = []
-    # for r in neg_recs.values():
-    #     nt = r.get("natural_text")
-    #     if nt:
-    #         filler_pool.extend(sent_split(nt))
-    # filler_pool = [s for s in filler_pool if len(s.split()) >= 4]
-    # if not filler_pool:
-    #     filler_pool = ["This is an unrelated sentence added by the editor."]
+    filler_pool = []
+    for r in neg_recs.values():
+        nt = r.get("natural_text")
+        if nt:
+            filler_pool.extend(sent_split(nt))
+    filler_pool = [s for s in filler_pool if len(s.split()) >= 4]
+    if not filler_pool:
+        filler_pool = ["This is an unrelated sentence added by the editor."]
 
     model = AutoModelForCausalLM.from_pretrained(MODEL_PATH).to(device)
     tok = AutoTokenizer.from_pretrained(MODEL_PATH)
@@ -162,7 +162,10 @@ def main():
                 try:
                     atk = apply_attack(t, prompt, editors[attack])
                     s = det_score(wm, atk)
-                except Exception:
+                except Exception as e:
+                    print(f"\nERROR: attack={attack}, alpha={a}, idx={i}")
+                    print(f"Exception type: {type(e).__name__}")
+                    print(f"Exception message: {e}")
                     s = None
                 append(pos_path, {"alpha": a, "attack": attack, "idx": i, "score": s})
                 pos_cache[(a, attack, i)] = s              # (a, ...) not (W, ...)

@@ -47,7 +47,9 @@ CONFIG_MAPPING_NAMES = {
     "SEMSTAMP": 'watermark.semstamp.SemStampConfig',
     "IE": "watermark.ie.IEConfig",
     "SemMax":"watermark.semmax.SemMaxConfig",
-    "Watermax": 'watermark.watermax.RobustGaussConfig'
+    "Watermax": 'watermark.watermax.RobustGaussConfig',
+    "Watermax_rob": 'watermark.watermax_rob.RobGaussConfig',
+    "STEAL": 'watermark.steal.STEALConfig'
 }
 
 

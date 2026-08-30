@@ -43,10 +43,10 @@ PARA_PREFIX = "paraphrase: "
 DIPPER_TOK_PATH   = "google/t5-v1_1-xxl"
 DIPPER_MODEL_PATH = "kalpeshk2011/dipper-paraphraser-xxl"
 
-METHODS = ["SemMax", "Watermax", "KSEMSTAMP"]
-LOAD_KWARGS = {"SemMax": {"max_gen_len": 200}, "Watermax": {"max_gen_len": 200}, "KSEMSTAMP": {"max_gen_len": 200}}
+METHODS = ["SemMax", "Watermax", "Watermax_rob", "KSEMSTAMP"]
+LOAD_KWARGS = {"SemMax": {"max_gen_len": 200}, "Watermax": {"max_gen_len": 200},"Watermax_rob": {"max_gen_len": 200}, "KSEMSTAMP": {"max_gen_len": 200}}
 
-DEFAULT_ATTACKS = ["clean", "Word-D", "Word-S", "Word-S-Context", "Translation", "Paraphrase-Small"]
+DEFAULT_ATTACKS = ["clean", "Word-D", "Word-S", "Word-S-Context", "Translation"]
 ALL_ATTACKS     = DEFAULT_ATTACKS + ["Doc-P-Dipper"]
 
 THRESHOLD_LABELS = ["TPR", "TNR", "FPR", "FNR", "P", "R", "F1", "ACC"]

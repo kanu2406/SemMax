@@ -47,7 +47,9 @@ WATERMARK_MAPPING_NAMES = {
     "SEMSTAMP": 'watermark.semstamp.SemStamp',
     "IE": "watermark.ie.IE",
     "SemMax": "watermark.semmax.SemMax",
-    'Watermax': 'watermark.watermax.RobustGauss'
+    'Watermax': 'watermark.watermax.RobustGauss',
+    'Watermax_rob': 'watermark.watermax_rob.RobGauss',
+    "STEAL": 'watermark.steal.STEAL'
 }
 
 

@@ -1,2 +1,3 @@
-method,group,n,mean,std,skew,excess_kurtosis,shapiro_p,ks_vs_N01_p
-SemMax,unwatermarked,100,-0.0843,1.1721,-0.061,-0.5183,0.52536,0.38595
+version https://git-lfs.github.com/spec/v1
+oid sha256:73910b1508ce330edf1599a6fd5a8a2ebd0f8d26eb94af1895a637fd39320af5
+size 140

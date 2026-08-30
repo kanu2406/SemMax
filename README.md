@@ -147,8 +147,7 @@ python semmax_utils/train_reference_net.py \
   --embedder_name ./semmax_utils/finetuned_embedder_booksum
 
 # generate clusters for k_semstamp
-
-python -m semmax_utils.sampling_kmeans_utils "semmax_utils/data/original-booksum-texts"     "semmax_utils/finetuned_embedder_booksum"     8
+python -m semmax_utils.sampling_kmeans_utils "semmax_utils/data/original-booksum-texts" "semmax_utils/finetuned_embedder_booksum"  8
 
  
 # generate + evaluate with the BookSum-trained components

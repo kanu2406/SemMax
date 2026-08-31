@@ -6,7 +6,7 @@ SemMax emits the one whose embedding best aligns with a context-dependent refere
 direction. Because the signal is a real-valued alignment rather than a discrete
 signal, it degrades gradually rather than abruptly under text modifications.
 
-
+![Overview](images/overview.png)
 ## 1. Setup
 
 ```bash
